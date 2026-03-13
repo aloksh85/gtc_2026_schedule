@@ -77,12 +77,9 @@ def generate_html():
         <table>
             <thead>
                 <tr>
-                    <th class="time-col">Time</th>
-                    <th class="plan-col">Plan A (Primary)</th>
-                    <th class="loc-col">Location</th>
-                    <th class="plan-b-col">Plan B (Alternate)</th>
-                    <th class="loc-col">Location</th>
-                    <th class="plan-c-col">Plan C</th>
+                    <th style="width: 33.3%;">Plan A (Primary)</th>
+                    <th style="width: 33.3%;">Plan B (Alternate)</th>
+                    <th style="width: 33.3%;">Plan C</th>
                 </tr>
             </thead>
             <tbody>
@@ -92,21 +89,28 @@ def generate_html():
             row_class = ' class="giveaway"' if is_giveaway else ''
             
             a_title = row['Plan A Title']
+            a_time = row['Plan A Time']
+            a_loc = row['Plan A Location']
+            
             b_title = row['Plan B Title']
+            b_time = row.get('Plan B Time', '')
+            b_loc = row.get('Plan B Location', '')
+            
             c_title = row.get('Plan C Title', '')
+            c_time = row.get('Plan C Time', '')
+            c_loc = row.get('Plan C Location', '')
             
-            a_html = f'<span class="session-title">{a_title}</span>'
-            b_html = f'<span class="session-title">{b_title}</span>'
-            c_html = f'<span class="session-title">{c_title}</span>' if c_title else ''
-            
+            def format_cell(title, time, loc):
+                if not title or title == 'No Plan B defined': return ''
+                loc_str = f'<br><span style="color: #666; font-size: 11px;">📍 {loc}</span>' if loc else ''
+                time_str = f'<br><span style="color: #76b900; font-size: 11px; font-weight: 600;">⏰ {time}</span>' if time else ''
+                return f'<span class="session-title">{title}</span>{time_str}{loc_str}'
+
             html += f"""
             <tr{row_class}>
-                <td class="time-col">{row['Plan A Time']}</td>
-                <td class="plan-col">{a_html}</td>
-                <td class="loc-col">{row['Plan A Location']}</td>
-                <td class="plan-b-col">{b_html}</td>
-                <td class="loc-col">{row.get('Plan B Location', 'TBD')}</td>
-                <td class="plan-c-col">{c_html}</td>
+                <td>{format_cell(a_title, a_time, a_loc)}</td>
+                <td>{format_cell(b_title, b_time, b_loc)}</td>
+                <td>{format_cell(c_title, c_time, c_loc)}</td>
             </tr>
             """
         html += "</tbody></table></div>"

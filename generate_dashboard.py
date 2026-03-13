@@ -371,11 +371,11 @@ def generate_dashboard():
                         <div class="card hackathon">
                             <div class="card-title">${slot['Plan C Title']}</div>
                             <div class="card-meta">
-                                <span>📍 Guildhouse</span>
-                                <span>⏰ ${slot.Plan_C_Time || ''}</span>
+                                <span>⏰ ${slot['Plan C Time'] || ''}</span>
+                                <span>📍 ${slot['Plan C Location'] || 'TBD'}</span>
                             </div>
                             <div class="card-desc">Special bypass option. Experience 'Vibe Coding' and rapid prototyping.</div>
-                            <a href="${slot.Plan_C_URL}" target="_blank" class="btn">Join Hackathon</a>
+                            <a href="${slot['Plan C URL']}" target="_blank" class="btn">Join Hackathon</a>
                         </div>
                     `;
                 }

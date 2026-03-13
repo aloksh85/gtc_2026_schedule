@@ -1,13 +1,6 @@
 import csv
 
-# 1. Load Original Plan A to get Location (Room)
-plan_a_locs = {}
-with open('current_schedule_gtc26.csv', 'r', encoding='utf-8') as f:
-    r = csv.DictReader(f)
-    for row in r:
-        plan_a_locs[row['Session Code']] = row['Room']
-
-# 2. Load all sessions to get descriptions
+# 1. Load all sessions to get metadata
 db = {}
 with open('all_gtc_sessions.csv', 'r', encoding='utf-8') as f:
     r = csv.DictReader(f)
@@ -81,7 +74,7 @@ for date in sorted(days.keys()):
     for row in days[date]:
         a_code = row['Plan A Code']
         a_title = row['Plan A Title']
-        a_loc = db[a_code]['Room'] if a_code in db and 'Room' in db[a_code] else plan_a_locs.get(a_code, 'Unknown Room')
+        a_loc = db[a_code]['Room'] if a_code in db else 'Room Unknown'
         a_url = get_url(a_code)
         
         b_code = row['Plan B Code']
@@ -96,6 +89,7 @@ for date in sorted(days.keys()):
         c_title = row.get('Plan C Title', '')
         c_url = db[c_code]['Link'] if c_code in db else ''
         c_time = db[c_code]['Time'] if c_code in db else ''
+        c_loc = db[c_code]['Room'] if c_code in db else ''
         
         csv_out.append({
             'Date': date,
@@ -111,6 +105,7 @@ for date in sorted(days.keys()):
             'Plan B URL': b_url,
             'Plan C Title': c_title,
             'Plan C Time': c_time,
+            'Plan C Location': c_loc,
             'Plan C URL': c_url
         })
         
@@ -134,6 +129,7 @@ for date in sorted(days.keys()):
             c_desc = get_brief(c_code)
             c_cell = f"**{c_link}**<br>*{c_code}*"
             if c_time: c_cell += f"<br>⏰ {c_time}"
+            if c_loc: c_cell += f"<br>📍 {c_loc}"
             if c_desc: c_cell += f"<br>{c_desc[:100]}..."
         
         md_out.append(f"| {row['Time']} | {a_cell} | {a_loc} | {b_cell} | {b_loc} | {c_cell} |")
@@ -144,7 +140,7 @@ with open('gtc2026_schedule_iteration_2.md', 'w', encoding='utf-8') as f:
     f.write("\n".join(md_out))
 
 with open('gtc2026_schedule_iteration_2.csv', 'w', newline='', encoding='utf-8') as f:
-    fields = ['Date', 'Plan A Time', 'Plan A Location', 'Plan A Title', 'Plan A Type', 'Plan A URL', 'Plan B Time', 'Plan B Location', 'Plan B Title', 'Plan B Type', 'Plan B URL', 'Plan C Title', 'Plan C Time', 'Plan C URL']
+    fields = ['Date', 'Plan A Time', 'Plan A Location', 'Plan A Title', 'Plan A Type', 'Plan A URL', 'Plan B Time', 'Plan B Location', 'Plan B Title', 'Plan B Type', 'Plan B URL', 'Plan C Title', 'Plan C Time', 'Plan C Location', 'Plan C URL']
     w = csv.DictWriter(f, fieldnames=fields)
     w.writeheader()
     w.writerows(csv_out)
