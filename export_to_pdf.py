@@ -129,9 +129,9 @@ def generate_html():
     </html>
     """
     
-    with open('gtc2026_printable.html', 'w', encoding='utf-8') as f:
+    with open('docs/printable.html', 'w', encoding='utf-8') as f:
         f.write(html)
-    print("Generated gtc2026_printable.html")
+    print("Generated docs/printable.html")
 
 if __name__ == "__main__":
     generate_html()

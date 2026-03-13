@@ -401,9 +401,9 @@ def generate_dashboard():
 </html>
     """
     
-    with open('gtc2026_dashboard.html', 'w', encoding='utf-8') as f:
+    with open('docs/index.html', 'w', encoding='utf-8') as f:
         f.write(html_template)
-    print("Dashboard generated: gtc2026_dashboard.html")
+    print("Dashboard generated: docs/index.html")
 
 if __name__ == "__main__":
     generate_dashboard()
