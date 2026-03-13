@@ -280,6 +280,11 @@ def generate_dashboard():
     </div>
     <div class="main">
         <div class="header">
+            <div style="background: rgba(118, 185, 0, 0.1); border: 1px solid var(--nvidia-green); padding: 20px; border-radius: 12px; margin-bottom: 40px;">
+                <h3 style="color: var(--nvidia-green); margin: 0 0 10px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Aligned Strategy</h3>
+                <h2 style="margin: 0 0 5px; font-size: 20px;">Physical AI, Robotics, and Vision Language Models</h2>
+                <p style="margin: 0; font-size: 13px; color: var(--text-secondary);">Sim-to-real workflows, edge deployment on Jetson Thor/Orin, and agentic reasoning.</p>
+            </div>
             <h1 id="day-title">Select a Day</h1>
             <p id="day-strategy"></p>
         </div>
