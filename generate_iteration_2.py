@@ -85,6 +85,10 @@ for date in sorted(days.keys()):
         b_loc = db[b_code]['Room'] if b_code in db and 'Room' in db[b_code] else 'TBD'
         b_time = db[b_code]['Time'] if b_code in db and 'Time' in db[b_code] else ''
         
+        a_rationale = row.get('Plan A Rationale', '')
+        b_rationale = row.get('Plan B Rationale', '')
+        c_rationale = row.get('Plan C Rationale', '')
+
         c_code = row.get('Plan C Code', '')
         c_title = row.get('Plan C Title', '')
         c_url = db[c_code]['Link'] if c_code in db else ''
@@ -96,16 +100,19 @@ for date in sorted(days.keys()):
             'Plan A Time': row['Time'],
             'Plan A Location': a_loc,
             'Plan A Title': a_title,
+            'Plan A Rationale': a_rationale,
             'Plan A Type': '',
             'Plan A URL': a_url,
             'Plan B Time': b_time,
             'Plan B Location': b_loc,
             'Plan B Title': b_title,
+            'Plan B Rationale': b_rationale,
             'Plan B Type': b_type,
             'Plan B URL': b_url,
             'Plan C Title': c_title,
             'Plan C Time': c_time,
             'Plan C Location': c_loc,
+            'Plan C Rationale': c_rationale,
             'Plan C URL': c_url
         })
         
@@ -117,11 +124,13 @@ for date in sorted(days.keys()):
         b_desc = get_brief(b_code)
         
         a_cell = f"**{a_link}**<br>*{a_code}*"
-        if a_desc: a_cell += f"<br>{a_desc[:100]}..."
+        if a_rationale: a_cell += f"<br>💡 *Takeaway: {a_rationale}*"
+        elif a_desc: a_cell += f"<br>{a_desc[:100]}..."
         
         b_time_label = f"<br>⏰ {b_time}" if b_time else ''
         b_cell = f"**{b_link}**<br>*{b_code}*{b_time_label}" if b_code != 'OPEN' else f"*{b_title}*"
-        if b_desc: b_cell += f"<br>{b_desc[:100]}..."
+        if b_rationale: b_cell += f"<br>💡 *Takeaway: {b_rationale}*"
+        elif b_desc: b_cell += f"<br>{b_desc[:100]}..."
         
         c_cell = ""
         if c_code:
@@ -130,7 +139,8 @@ for date in sorted(days.keys()):
             c_cell = f"**{c_link}**<br>*{c_code}*"
             if c_time: c_cell += f"<br>⏰ {c_time}"
             if c_loc: c_cell += f"<br>📍 {c_loc}"
-            if c_desc: c_cell += f"<br>{c_desc[:100]}..."
+            if c_rationale: c_cell += f"<br>💡 *Takeaway: {c_rationale}*"
+            elif c_desc: c_cell += f"<br>{c_desc[:100]}..."
         
         md_out.append(f"| {row['Time']} | {a_cell} | {a_loc} | {b_cell} | {b_loc} | {c_cell} |")
         
@@ -140,7 +150,7 @@ with open('gtc2026_schedule_iteration_2.md', 'w', encoding='utf-8') as f:
     f.write("\n".join(md_out))
 
 with open('gtc2026_schedule_iteration_2.csv', 'w', newline='', encoding='utf-8') as f:
-    fields = ['Date', 'Plan A Time', 'Plan A Location', 'Plan A Title', 'Plan A Type', 'Plan A URL', 'Plan B Time', 'Plan B Location', 'Plan B Title', 'Plan B Type', 'Plan B URL', 'Plan C Title', 'Plan C Time', 'Plan C Location', 'Plan C URL']
+    fields = ['Date', 'Plan A Time', 'Plan A Location', 'Plan A Title', 'Plan A Rationale', 'Plan A Type', 'Plan A URL', 'Plan B Time', 'Plan B Location', 'Plan B Title', 'Plan B Rationale', 'Plan B Type', 'Plan B URL', 'Plan C Title', 'Plan C Time', 'Plan C Location', 'Plan C Rationale', 'Plan C URL']
     w = csv.DictWriter(f, fieldnames=fields)
     w.writeheader()
     w.writerows(csv_out)

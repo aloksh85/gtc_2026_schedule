@@ -235,6 +235,17 @@ def generate_dashboard():
             flex: 1;
         }
 
+        .takeaway {
+            margin-top: 10px;
+            padding: 8px;
+            background: rgba(118, 185, 0, 0.05);
+            border-left: 3px solid var(--nvidia-green);
+            border-radius: 4px;
+            font-size: 11px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
         .btn {
             display: inline-block;
             background: var(--glass);
@@ -346,7 +357,9 @@ def generate_dashboard():
                             <div class="card-meta">
                                 <span>📍 ${slot['Plan A Location']}</span>
                             </div>
-                            <div class="card-desc">Targeting your strategy in Physical AI and Robotics.</div>
+                            <div class="card-desc">
+                                ${slot['Plan A Rationale'] ? `<div class="takeaway">💡 <b>Takeaway:</b> ${slot['Plan A Rationale']}</div>` : "Targeting your strategy in Physical AI and Robotics."}
+                            </div>
                             <a href="${slot['Plan A URL']}" target="_blank" class="btn">View Session</a>
                         </div>
                     `;
@@ -357,11 +370,13 @@ def generate_dashboard():
                         <div class="card plan-b">
                             <div class="card-title">${slot['Plan B Title']}</div>
                             <div class="card-meta">
-                                <span>📍 ${slot.Plan_B_Location || 'TBD'}</span>
-                                <span>⏰ ${slot.Plan_B_Time || ''}</span>
+                                <span>📍 ${slot['Plan B Location'] || 'TBD'}</span>
+                                <span>⏰ ${slot['Plan B Time'] || ''}</span>
                             </div>
-                            <div class="card-desc">Strong alternate focused on scalability and reasoning.</div>
-                            <a href="${slot.Plan_B_URL}" target="_blank" class="btn">View Alternate</a>
+                            <div class="card-desc">
+                                ${slot['Plan B Rationale'] ? `<div class="takeaway">💡 <b>Takeaway:</b> ${slot['Plan B Rationale']}</div>` : "Strong alternate focused on scalability and reasoning."}
+                            </div>
+                            <a href="${slot['Plan B URL']}" target="_blank" class="btn">View Alternate</a>
                         </div>
                     `;
                 }
@@ -374,7 +389,9 @@ def generate_dashboard():
                                 <span>⏰ ${slot['Plan C Time'] || ''}</span>
                                 <span>📍 ${slot['Plan C Location'] || 'TBD'}</span>
                             </div>
-                            <div class="card-desc">Special bypass option. Experience 'Vibe Coding' and rapid prototyping.</div>
+                            <div class="card-desc">
+                                ${slot['Plan C Rationale'] ? `<div class="takeaway">💡 <b>Takeaway:</b> ${slot['Plan C Rationale']}</div>` : "Special bypass option. Experience 'Vibe Coding'."}
+                            </div>
                             <a href="${slot['Plan C URL']}" target="_blank" class="btn">Join Hackathon</a>
                         </div>
                     `;

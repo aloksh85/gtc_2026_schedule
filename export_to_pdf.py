@@ -91,26 +91,30 @@ def generate_html():
             a_title = row['Plan A Title']
             a_time = row['Plan A Time']
             a_loc = row['Plan A Location']
+            a_rationale = row.get('Plan A Rationale', '')
             
             b_title = row['Plan B Title']
             b_time = row.get('Plan B Time', '')
             b_loc = row.get('Plan B Location', '')
+            b_rationale = row.get('Plan B Rationale', '')
             
             c_title = row.get('Plan C Title', '')
             c_time = row.get('Plan C Time', '')
             c_loc = row.get('Plan C Location', '')
+            c_rationale = row.get('Plan C Rationale', '')
             
-            def format_cell(title, time, loc):
+            def format_cell(title, time, loc, rationale):
                 if not title or title == 'No Plan B defined': return ''
                 loc_str = f'<br><span style="color: #666; font-size: 11px;">📍 {loc}</span>' if loc else ''
                 time_str = f'<br><span style="color: #76b900; font-size: 11px; font-weight: 600;">⏰ {time}</span>' if time else ''
-                return f'<span class="session-title">{title}</span>{time_str}{loc_str}'
+                rat_str = f'<br><span style="color: #444; font-size: 10px; font-style: italic; display: block; margin-top: 4px;">💡 {rationale}</span>' if rationale else ''
+                return f'<span class="session-title">{title}</span>{time_str}{loc_str}{rat_str}'
 
             html += f"""
             <tr{row_class}>
-                <td>{format_cell(a_title, a_time, a_loc)}</td>
-                <td>{format_cell(b_title, b_time, b_loc)}</td>
-                <td>{format_cell(c_title, c_time, c_loc)}</td>
+                <td>{format_cell(a_title, a_time, a_loc, a_rationale)}</td>
+                <td>{format_cell(b_title, b_time, b_loc, b_rationale)}</td>
+                <td>{format_cell(c_title, c_time, c_loc, c_rationale)}</td>
             </tr>
             """
         html += "</tbody></table></div>"
